@@ -1,6 +1,7 @@
 package main
 
 import (
+	pb "github.com/lapeko/udemy__grpc-golang/greet/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
@@ -15,5 +16,14 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	defer con.Close()
+	defer func(con *grpc.ClientConn) {
+		err := con.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}(con)
+
+	client := pb.NewGreetServiceClient(con)
+
+	doGreat(client)
 }

@@ -11,7 +11,7 @@ const (
 	address = "0.0.0.0:50051"
 )
 
-type server struct {
+type Server struct {
 	pb.GreetServiceServer
 }
 
@@ -23,6 +23,8 @@ func main() {
 	}
 
 	s := grpc.NewServer()
+
+	pb.RegisterGreetServiceServer(s, &Server{})
 
 	log.Println("Server running on ", address)
 	log.Fatalln(s.Serve(lis))
