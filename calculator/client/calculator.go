@@ -64,3 +64,47 @@ func getAvg(client pb.CalculatorServiceClient, numbers []int32) {
 
 	log.Printf("Response received: Avg is: %f\n", res.Avg)
 }
+
+func doMax(c pb.CalculatorServiceClient, numbers []int) {
+	stream, err := c.Max(context.Background())
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	waitc := make(chan struct{})
+
+	go func() {
+		for _, number := range numbers {
+			time.Sleep(500 * time.Millisecond)
+			log.Println("Sending request to server. Number:", number)
+
+			if err := stream.Send(&pb.MaxRequest{Number: int32(number)}); err != nil {
+				log.Fatalln(err)
+			}
+		}
+
+		if err := stream.CloseSend(); err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
+	go func() {
+		for {
+			res, err := stream.Recv()
+
+			if err == io.EOF {
+				close(waitc)
+				break
+			}
+
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			log.Println("Response received. Max:", res.MaxNumber)
+		}
+	}()
+
+	<-waitc
+}

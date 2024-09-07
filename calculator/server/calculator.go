@@ -67,3 +67,35 @@ func (s *calculatorServer) Avg(client grpc.ClientStreamingServer[pb.AvgRequest, 
 		numbers = append(numbers, req.Number)
 	}
 }
+
+func (s *calculatorServer) Max(stream grpc.BidiStreamingServer[pb.MaxRequest, pb.MaxResponse]) error {
+	initialised := false
+	var maxNumber int
+
+	for {
+		req, err := stream.Recv()
+
+		if err == io.EOF {
+			return nil
+		}
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		reqNumber := int(req.Number)
+
+		if !initialised {
+			initialised = true
+			maxNumber = reqNumber
+		}
+
+		if reqNumber > maxNumber {
+			maxNumber = reqNumber
+		}
+
+		if err := stream.Send(&pb.MaxResponse{MaxNumber: int32(maxNumber)}); err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
