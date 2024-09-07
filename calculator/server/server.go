@@ -9,12 +9,8 @@ import (
 
 const addr = "0.0.0.0:50051"
 
-type sumServer struct {
-	pb.SumServiceServer
-}
-
-type primesServer struct {
-	pb.PrimesStreamingServiceServer
+type calculatorServer struct {
+	pb.CalculatorServiceServer
 }
 
 func main() {
@@ -26,8 +22,7 @@ func main() {
 
 	s := grpc.NewServer()
 
-	pb.RegisterSumServiceServer(s, &sumServer{})
-	pb.RegisterPrimesStreamingServiceServer(s, &primesServer{})
+	pb.RegisterCalculatorServiceServer(s, &calculatorServer{})
 
 	log.Println("Server is running on ", addr)
 	log.Fatalln(s.Serve(lis))

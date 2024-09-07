@@ -23,8 +23,7 @@ func main() {
 		}
 	}(cc)
 
-	//sumClient := pb.NewSumServiceClient(cc)
-	//doSum(sumClient, 2, 3)
-	primesClient := pb.NewPrimesStreamingServiceClient(cc)
-	GetPrimes(primesClient, 120)
+	client := pb.NewCalculatorServiceClient(cc)
+	//doSum(client, 2, 3)
+	getPrimes(client, 120)
 }

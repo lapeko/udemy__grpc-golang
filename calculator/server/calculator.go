@@ -1,12 +1,21 @@
 package main
 
 import (
+	"context"
 	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"google.golang.org/grpc"
 	"log"
 )
 
-func (s *primesServer) GetPrimes(request *pb.PrimeRequest, stream grpc.ServerStreamingServer[pb.PrimeResponse]) error {
+func (s *calculatorServer) Sum(ctx context.Context, in *pb.SumRequest) (*pb.SumResponse, error) {
+	log.Printf("Request received with params: %v\n", in)
+
+	return &pb.SumResponse{
+		Sum: in.Num1 + in.Num2,
+	}, nil
+}
+
+func (s *calculatorServer) Primes(request *pb.PrimeRequest, stream grpc.ServerStreamingServer[pb.PrimeResponse]) error {
 	num := request.Number
 	prime := uint32(2)
 
