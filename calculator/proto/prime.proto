@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package calculator;
+
+option go_package = "github.com/lapeko/udemy__grpc-golang/calculator/proto";
+
+message PrimeRequest {
+  uint32 number = 1;
+}
+
+message PrimeResponse {
+  uint32 prime = 1;
+}

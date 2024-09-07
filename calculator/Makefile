@@ -3,7 +3,7 @@ SERVER_SRC_CWD=.\server
 CLIENT_SRC_CWD=.\client
 
 protoc:
-	protoc --go_out=. --go-grpc_out=. --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative proto/*.proto
+	protoc -I=proto --go_out=./proto --go-grpc_out=./proto --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative proto/*.proto
 
 build:
 	if not exist $(BINARY_CWD) mkdir $(BINARY_CWD)

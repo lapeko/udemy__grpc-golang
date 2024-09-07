@@ -1,43 +1,17 @@
 syntax = "proto3";
 
+package calculator;
+
 option go_package = "github.com/lapeko/udemy__grpc-golang/calculator/proto";
+
+import "sum.proto";
+import "prime.proto";
+import "avg.proto";
+import "max.proto";
 
 service CalculatorService {
   rpc Sum (SumRequest) returns (SumResponse);
   rpc Primes (PrimeRequest) returns (stream PrimeResponse);
   rpc Avg (stream AvgRequest) returns (AvgResponse);
   rpc Max (stream MaxRequest) returns (stream MaxResponse);
-}
-
-message SumRequest {
-  int32 num1 = 1;
-  int32 num2 = 2;
-}
-
-message SumResponse {
-  int32 sum = 1;
-}
-
-message PrimeRequest {
-  uint32 number = 1;
-}
-
-message PrimeResponse {
-  uint32 prime = 1;
-}
-
-message AvgRequest {
-  int32 number = 1;
-}
-
-message AvgResponse {
-  float avg = 1;
-}
-
-message MaxRequest {
-  int32 number = 1;
-}
-
-message MaxResponse {
-  int32 maxNumber= 1;
 }
