@@ -1,4 +1,4 @@
-BINARY_CWD=.\bin\sum
+BINARY_CWD=.\bin\calculator
 SERVER_SRC_CWD=.\server
 CLIENT_SRC_CWD=.\client
 
@@ -9,3 +9,9 @@ build:
 	if not exist $(BINARY_CWD) mkdir $(BINARY_CWD)
 	go build -v -o $(BINARY_CWD) $(SERVER_SRC_CWD)
 	go build -v -o $(BINARY_CWD) $(CLIENT_SRC_CWD)
+
+run-server:
+	go run -v $(SERVER_SRC_CWD)
+
+run-client:
+	go run -v $(CLIENT_SRC_CWD)

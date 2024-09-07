@@ -1,4 +1,4 @@
-module github.com/lapeko/udemy__grpc-golang/sum
+module github.com/lapeko/udemy__grpc-golang/calculator
 
 go 1.21.3
 

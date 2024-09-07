@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/lapeko/udemy__grpc-golang/sum/proto"
+	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
@@ -23,6 +23,8 @@ func main() {
 		}
 	}(cc)
 
-	sumClient := pb.NewSumServiceClient(cc)
-	doSum(sumClient, 2, 3)
+	//sumClient := pb.NewSumServiceClient(cc)
+	//doSum(sumClient, 2, 3)
+	primesClient := pb.NewPrimesStreamingServiceClient(cc)
+	GetPrimes(primesClient, 120)
 }

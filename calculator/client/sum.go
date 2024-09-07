@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"github.com/lapeko/udemy__grpc-golang/sum/proto"
-	pb "github.com/lapeko/udemy__grpc-golang/sum/proto"
+	"github.com/lapeko/udemy__grpc-golang/calculator/proto"
+	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"log"
 )
 

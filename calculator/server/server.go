@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/lapeko/udemy__grpc-golang/sum/proto"
+	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -9,8 +9,12 @@ import (
 
 const addr = "0.0.0.0:50051"
 
-type server struct {
+type sumServer struct {
 	pb.SumServiceServer
+}
+
+type primesServer struct {
+	pb.PrimesStreamingServiceServer
 }
 
 func main() {
@@ -22,7 +26,8 @@ func main() {
 
 	s := grpc.NewServer()
 
-	pb.RegisterSumServiceServer(s, &server{})
+	pb.RegisterSumServiceServer(s, &sumServer{})
+	pb.RegisterPrimesStreamingServiceServer(s, &primesServer{})
 
 	log.Println("Server is running on ", addr)
 	log.Fatalln(s.Serve(lis))

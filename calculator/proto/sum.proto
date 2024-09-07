@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/lapeko/udemy__grpc-golang/sum/proto";
+option go_package = "github.com/lapeko/udemy__grpc-golang/calculator/proto";
 
 message SumRequest {
   int32 num1 = 1;
