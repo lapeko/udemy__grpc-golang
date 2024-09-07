@@ -5,6 +5,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
+	"time"
 )
 
 const address = "0.0.0.0:50051"
@@ -27,5 +28,6 @@ func main() {
 	//doGreat(client)
 	//doGreetList(client)
 	//doGreetLong(client)
-	doGreetEveryone(client, []string{"Maria", "Anna", "Karina"})
+	//doGreetEveryone(client, []string{"Maria", "Anna", "Karina"})
+	doDeadlineGreet(client, 4*time.Second)
 }

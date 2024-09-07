@@ -2,11 +2,15 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	pb "github.com/lapeko/udemy__grpc-golang/greet/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
+	"time"
 )
 
 func (s *greetServer) Greet(ctx context.Context, greet *pb.GreetRequest) (*pb.GreetResponse, error) {
@@ -66,4 +70,21 @@ func (s *greetServer) GreetEveryone(stream grpc.BidiStreamingServer[pb.GreetRequ
 			log.Fatalln(err)
 		}
 	}
+}
+
+func (s *greetServer) GreetDeadline(ctx context.Context, req *pb.GreetRequest) (*pb.GreetResponse, error) {
+	for i := 0; i < 3; i++ {
+
+		log.Println("Request proceeding...")
+
+		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
+			log.Println("Client canceled request")
+			return nil, status.Error(codes.DeadlineExceeded, "The client canceled the request")
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	log.Println("Sending response...")
+
+	return &pb.GreetResponse{Response: fmt.Sprintf("Hello, %s", req.Name)}, nil
 }
