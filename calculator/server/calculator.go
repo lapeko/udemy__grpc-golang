@@ -4,6 +4,7 @@ import (
 	"context"
 	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 )
 
@@ -34,4 +35,35 @@ func (s *calculatorServer) Primes(request *pb.PrimeRequest, stream grpc.ServerSt
 	}
 
 	return nil
+}
+
+func (s *calculatorServer) Avg(client grpc.ClientStreamingServer[pb.AvgRequest, pb.AvgResponse]) error {
+	log.Println("Avg function call...")
+
+	numbers := make([]int32, 0)
+
+	for {
+		req, err := client.Recv()
+
+		if err == io.EOF {
+			var sum float32
+			for _, num := range numbers {
+				sum += float32(num)
+			}
+			avg := sum / float32(len(numbers))
+			if err := client.SendAndClose(&pb.AvgResponse{Avg: avg}); err != nil {
+				log.Fatalln(err)
+			}
+			log.Printf("Avg function response: %f\n", avg)
+			return nil
+		}
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Printf("New value received: %d\n", req.Number)
+
+		numbers = append(numbers, req.Number)
+	}
 }

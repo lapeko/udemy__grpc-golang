@@ -25,5 +25,6 @@ func main() {
 
 	client := pb.NewCalculatorServiceClient(cc)
 	//doSum(client, 2, 3)
-	getPrimes(client, 120)
+	//getPrimes(client, 120)
+	getAvg(client, []int32{1, 13, 33})
 }

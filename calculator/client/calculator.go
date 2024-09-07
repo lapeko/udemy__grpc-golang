@@ -5,6 +5,7 @@ import (
 	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"io"
 	"log"
+	"time"
 )
 
 func doSum(client pb.CalculatorServiceClient, num1 int, num2 int) {
@@ -39,4 +40,27 @@ func getPrimes(client pb.CalculatorServiceClient, num uint32) {
 
 		log.Println(res)
 	}
+}
+
+func getAvg(client pb.CalculatorServiceClient, numbers []int32) {
+	stream, err := client.Avg(context.Background())
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for _, number := range numbers {
+		if err := stream.Send(&pb.AvgRequest{Number: number}); err != nil {
+			log.Fatalln(err)
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	res, err := stream.CloseAndRecv()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Printf("Response received: Avg is: %f\n", res.Avg)
 }
