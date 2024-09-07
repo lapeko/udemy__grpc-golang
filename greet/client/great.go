@@ -21,10 +21,10 @@ func doGreat(c pb.GreetServiceClient) {
 	log.Println("Client received response: ", greet.Response)
 }
 
-func doGreetList(c pb.GreetListServiceClient) {
+func doGreetList(c pb.GreetServiceClient) {
 	log.Println("Client sending request...")
 
-	stream, err := c.GreetList(context.Background(), &pb.GreetRequest{Name: "Vital"})
+	stream, err := c.GreetManyTimes(context.Background(), &pb.GreetRequest{Name: "Vital"})
 
 	if err != nil {
 		log.Fatalln(err)

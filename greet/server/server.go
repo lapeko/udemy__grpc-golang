@@ -15,10 +15,6 @@ type greetServer struct {
 	pb.GreetServiceServer
 }
 
-type greetListServer struct {
-	pb.GreetListServiceServer
-}
-
 func main() {
 	lis, err := net.Listen("tcp", address)
 
@@ -29,7 +25,6 @@ func main() {
 	s := grpc.NewServer()
 
 	pb.RegisterGreetServiceServer(s, &greetServer{})
-	pb.RegisterGreetListServiceServer(s, &greetListServer{})
 
 	log.Println("Server running on ", address)
 	log.Fatalln(s.Serve(lis))

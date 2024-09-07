@@ -13,7 +13,7 @@ func (s *greetServer) Greet(ctx context.Context, greet *pb.GreetRequest) (*pb.Gr
 	}, nil
 }
 
-func (s *greetListServer) GreetList(gr *pb.GreetRequest, stream grpc.ServerStreamingServer[pb.GreetResponse]) error {
+func (s *greetServer) GreetManyTimes(gr *pb.GreetRequest, stream grpc.ServerStreamingServer[pb.GreetResponse]) error {
 	for i := 0; i < 10; i++ {
 		if err := stream.Send(&pb.GreetResponse{Response: fmt.Sprintf("Hello %s. Iteration %d", gr.Name, i+1)}); err != nil {
 			return err
