@@ -23,8 +23,9 @@ func main() {
 		}
 	}(con)
 
-	greetClient := pb.NewGreetServiceClient(con)
-	//doGreat(greetClient)
-	//doGreetList(greetClient)
-	doGreetLong(greetClient)
+	client := pb.NewGreetServiceClient(con)
+	//doGreat(client)
+	//doGreetList(client)
+	//doGreetLong(client)
+	doGreetEveryone(client, []string{"Maria", "Anna", "Karina"})
 }

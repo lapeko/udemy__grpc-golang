@@ -72,3 +72,47 @@ func doGreetLong(c pb.GreetServiceClient) {
 
 	log.Println(response.Response)
 }
+
+func doGreetEveryone(s pb.GreetServiceClient, names []string) {
+	stream, err := s.GreetEveryone(context.Background())
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	waitc := make(chan struct{})
+
+	go func() {
+		for _, name := range names {
+			time.Sleep(1 * time.Second)
+
+			log.Println("Request sending... Name:", name)
+
+			if err := stream.Send(&pb.GreetRequest{Name: name}); err != nil {
+				log.Fatalln(err)
+			}
+		}
+		if err := stream.CloseSend(); err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
+	go func() {
+		for {
+			res, err := stream.Recv()
+
+			if err == io.EOF {
+				close(waitc)
+				break
+			}
+
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			log.Printf("Response received: %s\n", res.Response)
+		}
+	}()
+
+	<-waitc
+}

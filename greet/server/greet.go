@@ -46,3 +46,24 @@ func (s *greetServer) GreetLong(clientStream grpc.ClientStreamingServer[pb.Greet
 		responseString += fmt.Sprintf("Hello, %s\n", req.Name)
 	}
 }
+
+func (s *greetServer) GreetEveryone(stream grpc.BidiStreamingServer[pb.GreetRequest, pb.GreetResponse]) error {
+	for {
+		req, err := stream.Recv()
+
+		if err == io.EOF {
+			return nil
+		}
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		name := req.Name
+		log.Println("Request received... Name:", name)
+
+		if err := stream.Send(&pb.GreetResponse{Response: fmt.Sprintf("Hello, %s", name)}); err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
