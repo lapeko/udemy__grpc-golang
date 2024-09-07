@@ -5,6 +5,8 @@ import (
 	"fmt"
 	pb "github.com/lapeko/udemy__grpc-golang/greet/proto"
 	"google.golang.org/grpc"
+	"io"
+	"log"
 )
 
 func (s *greetServer) Greet(ctx context.Context, greet *pb.GreetRequest) (*pb.GreetResponse, error) {
@@ -20,4 +22,27 @@ func (s *greetServer) GreetManyTimes(gr *pb.GreetRequest, stream grpc.ServerStre
 		}
 	}
 	return nil
+}
+
+func (s *greetServer) GreetLong(clientStream grpc.ClientStreamingServer[pb.GreetRequest, pb.GreetResponse]) error {
+	responseString := ""
+
+	for {
+		req, err := clientStream.Recv()
+
+		if err == io.EOF {
+			if err := clientStream.SendAndClose(&pb.GreetResponse{Response: responseString}); err != nil {
+				log.Fatalln(err)
+			}
+			return nil
+		}
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Println("Request received.", req)
+
+		responseString += fmt.Sprintf("Hello, %s\n", req.Name)
+	}
 }
