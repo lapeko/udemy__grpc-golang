@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"time"
@@ -107,4 +109,21 @@ func doMax(c pb.CalculatorServiceClient, numbers []int) {
 	}()
 
 	<-waitc
+}
+
+func doSqrt(c pb.CalculatorServiceClient, num int32) {
+	res, err := c.Sqrt(context.Background(), &pb.SqrtRequest{Number: num})
+
+	if err != nil {
+		e, ok := status.FromError(err)
+		if ok {
+			if e.Code() == codes.InvalidArgument {
+				log.Fatalln("You probably provided not positive value")
+			}
+			log.Fatalf("Error. Status code %d. %s", e.Code(), e.Message())
+		}
+		log.Fatalln(err)
+	}
+
+	log.Printf("Sqrt of %d is %.2f\n", num, res.Number)
 }

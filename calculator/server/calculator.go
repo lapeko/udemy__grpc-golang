@@ -4,8 +4,11 @@ import (
 	"context"
 	pb "github.com/lapeko/udemy__grpc-golang/calculator/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
+	"math"
 )
 
 func (s *calculatorServer) Sum(ctx context.Context, in *pb.SumRequest) (*pb.SumResponse, error) {
@@ -98,4 +101,14 @@ func (s *calculatorServer) Max(stream grpc.BidiStreamingServer[pb.MaxRequest, pb
 			log.Fatalln(err)
 		}
 	}
+}
+
+func (s *calculatorServer) Sqrt(c context.Context, in *pb.SqrtRequest) (*pb.SqrtResponse, error) {
+	if in.Number <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "PLease, provide positive value")
+	}
+
+	num := math.Sqrt(float64(in.Number))
+
+	return &pb.SqrtResponse{Number: num}, nil
 }

@@ -27,5 +27,6 @@ func main() {
 	//doSum(client, 2, 3)
 	//getPrimes(client, 120)
 	//getAvg(client, []int32{1, 13, 33})
-	doMax(client, []int{4, -5, 10, 0, -3, 34})
+	//doMax(client, []int{4, -5, 10, 0, -3, 34})
+	doSqrt(client, -3)
 }
