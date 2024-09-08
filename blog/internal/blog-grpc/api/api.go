@@ -7,16 +7,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 )
 
-const address = "localhost:50051"
+const (
+	address       = "localhost:50051"
+	reflectionRun = true
+)
 
 type Api struct {
 	db             *mongo.Database
-	blogServer     *BlogServer
 	BlogRepository *storage.BlogRepository
+	pb.BlogServiceServer
 }
 
 func (a *Api) Start() {
@@ -27,19 +31,18 @@ func (a *Api) Start() {
 
 	s := grpc.NewServer()
 
-	a.blogServer = &BlogServer{}
+	if reflectionRun {
+		reflection.Register(s)
+	}
 
-	pb.RegisterBlogServiceServer(s, a.blogServer)
+	pb.RegisterBlogServiceServer(s, a)
 
 	log.Println("Server is running on", address)
 	log.Fatalln(s.Serve(lis))
 }
 
 func (a *Api) InitStorage() {
-	connectOptions := options.Client().ApplyURI("mongodb://localhost:27017").SetAuth(options.Credential{
-		Username: "root",
-		Password: "root",
-	})
+	connectOptions := options.Client().ApplyURI("mongodb://root:root@localhost:27017")
 	client, err := mongo.Connect(context.Background(), connectOptions)
 	if err != nil {
 		log.Fatalln(err)

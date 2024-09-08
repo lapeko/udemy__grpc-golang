@@ -8,7 +8,7 @@ option go_package = "github.com/lapeko/udemy__grpc-golang/blog/proto";
 
 service BlogService {
   rpc getBlogs (google.protobuf.Empty) returns (stream Blog);
-  rpc createBog (Blog) returns (Blog);
+  rpc createBlog (Blog) returns (BlogId);
   rpc getBlogById (BlogId) returns (Blog);
   rpc updateBlog (Blog) returns (google.protobuf.Empty);
   rpc deleteBlog (Blog) returns (BlogId);

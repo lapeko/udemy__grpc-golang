@@ -12,11 +12,17 @@ type Blog struct {
 	Content  string             `bson:"content"`
 }
 
-func (b *Blog) toProto() *pb.Blog {
+func (b *Blog) ToProto() *pb.Blog {
 	return &pb.Blog{
 		Id:       b.Id.Hex(),
 		AuthorId: b.AuthorId,
 		Title:    b.Title,
 		Content:  b.Content,
 	}
+}
+
+func (b *Blog) FillFromProto(p *pb.Blog) {
+	b.AuthorId = p.AuthorId
+	b.Title = p.Title
+	b.Content = p.Content
 }
