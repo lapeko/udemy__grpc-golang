@@ -8,16 +8,26 @@ import (
 	"time"
 )
 
-const address = "0.0.0.0:50051"
+const (
+	address = "0.0.0.0:50051"
+	useSSL  = false
+)
 
 func main() {
-	creds, err := credentials.NewClientTLSFromFile("ssl/server.crt", "")
 
-	if err != nil {
-		log.Fatalln(err)
+	var opts []grpc.DialOption
+
+	if useSSL {
+		creds, err := credentials.NewClientTLSFromFile("ssl/server.crt", "")
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		opts = append(opts, grpc.WithTransportCredentials(creds))
 	}
 
-	con, err := grpc.NewClient(address, grpc.WithTransportCredentials(creds))
+	con, err := grpc.NewClient(address, opts...)
 
 	if err != nil {
 		log.Fatalln(err)

@@ -4,12 +4,15 @@ import (
 	pb "github.com/lapeko/udemy__grpc-golang/greet/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 )
 
 const (
-	address = "0.0.0.0:50051"
+	address       = "0.0.0.0:50051"
+	useSSL        = false
+	runReflection = true
 )
 
 type greetServer struct {
@@ -23,13 +26,21 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	creds, err := credentials.NewServerTLSFromFile("ssl/server.crt", "ssl/server.key")
+	var opts []grpc.ServerOption
 
-	if err != nil {
-		log.Fatalln(err)
+	if useSSL {
+		creds, err := credentials.NewServerTLSFromFile("ssl/server.crt", "ssl/server.key")
+		if err != nil {
+			log.Fatalln(err)
+		}
+		opts = append(opts, grpc.Creds(creds))
 	}
 
-	s := grpc.NewServer(grpc.Creds(creds))
+	s := grpc.NewServer(opts...)
+
+	if runReflection {
+		reflection.Register(s)
+	}
 
 	pb.RegisterGreetServiceServer(s, &greetServer{})
 
