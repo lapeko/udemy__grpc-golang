@@ -1,6 +1,7 @@
 BINARY_CWD=.\bin\greet
 SERVER_SRC_CWD=.\server
 CLIENT_SRC_CWD=.\client
+SSL_CWD=.\ssl
 
 protoc:
 	protoc --go_out=. --go-grpc_out=. --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative proto/*.proto
@@ -15,3 +16,6 @@ run-server:
 
 run-client:
 	go run -v $(CLIENT_SRC_CWD)
+
+generate-ssl:
+	cd $(SSL_CWD) && openssl genrsa -out server.key 2048 && openssl req -new -x509 -key server.key -out server.crt -days 365 -config openssl.cnf

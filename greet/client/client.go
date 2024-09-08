@@ -3,7 +3,7 @@ package main
 import (
 	pb "github.com/lapeko/udemy__grpc-golang/greet/proto"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 	"log"
 	"time"
 )
@@ -11,7 +11,13 @@ import (
 const address = "0.0.0.0:50051"
 
 func main() {
-	con, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	creds, err := credentials.NewClientTLSFromFile("ssl/server.crt", "")
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	con, err := grpc.NewClient(address, grpc.WithTransportCredentials(creds))
 
 	if err != nil {
 		log.Fatalln(err)
