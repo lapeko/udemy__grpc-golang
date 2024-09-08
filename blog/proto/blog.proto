@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package blog;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/lapeko/udemy__grpc-golang/blog/proto";
+
+service BlogService {
+  rpc getBlogs (google.protobuf.Empty) returns (stream Blog);
+  rpc createBog (Blog) returns (Blog);
+  rpc getBlogById (BlogId) returns (Blog);
+  rpc updateBlog (Blog) returns (google.protobuf.Empty);
+  rpc deleteBlog (Blog) returns (BlogId);
+
+}
+
+message Blog {
+  string id = 1;
+  string authorId = 2;
+  string title = 3;
+  string content = 4;
+}
+
+message BlogId {
+  string id = 1;
+}
