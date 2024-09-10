@@ -3,7 +3,7 @@ package storage
 import (
 	"context"
 	"fmt"
-	"github.com/lapeko/udemy__grpc-golang/blog/internal/blog-grpc/models"
+	"github.com/lapeko/udemy__grpc-golang/blog/server/internal/blog-grpc/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc/codes"

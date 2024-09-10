@@ -2,8 +2,8 @@ package api
 
 import (
 	"context"
-	pb "github.com/lapeko/udemy__grpc-golang/blog/proto"
-	"github.com/lapeko/udemy__grpc-golang/blog/storage"
+	pb "github.com/lapeko/udemy__grpc-golang/blog/server/proto"
+	"github.com/lapeko/udemy__grpc-golang/blog/server/storage"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"

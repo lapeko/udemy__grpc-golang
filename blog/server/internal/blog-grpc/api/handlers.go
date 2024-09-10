@@ -2,8 +2,8 @@ package api
 
 import (
 	"context"
-	"github.com/lapeko/udemy__grpc-golang/blog/internal/blog-grpc/models"
-	pb "github.com/lapeko/udemy__grpc-golang/blog/proto"
+	"github.com/lapeko/udemy__grpc-golang/blog/server/internal/blog-grpc/models"
+	pb "github.com/lapeko/udemy__grpc-golang/blog/server/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"

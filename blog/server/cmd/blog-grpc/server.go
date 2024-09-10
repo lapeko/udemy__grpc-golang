@@ -1,6 +1,8 @@
 package main
 
-import "github.com/lapeko/udemy__grpc-golang/blog/internal/blog-grpc/api"
+import (
+	"github.com/lapeko/udemy__grpc-golang/blog/server/internal/blog-grpc/api"
+)
 
 func main() {
 	appApi := api.Api{}

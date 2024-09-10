@@ -1,7 +1,7 @@
 package models
 
 import (
-	pb "github.com/lapeko/udemy__grpc-golang/blog/proto"
+	pb "github.com/lapeko/udemy__grpc-golang/blog/server/proto"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

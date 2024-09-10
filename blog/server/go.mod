@@ -1,4 +1,4 @@
-module github.com/lapeko/udemy__grpc-golang/blog
+module github.com/lapeko/udemy__grpc-golang/blog/server
 
 go 1.21.3
 
