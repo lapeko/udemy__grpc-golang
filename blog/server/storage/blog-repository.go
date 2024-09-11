@@ -90,7 +90,7 @@ func (br *BlogRepository) GetById(ctx context.Context, id string) (*models.Blog,
 	return &blog, nil
 }
 
-func (br *BlogRepository) update(ctx context.Context, blog *models.Blog) error {
+func (br *BlogRepository) Update(ctx context.Context, blog *models.Blog) error {
 	res, err := br.collection.UpdateByID(ctx, blog.Id, blog)
 
 	if err != nil {
@@ -104,7 +104,7 @@ func (br *BlogRepository) update(ctx context.Context, blog *models.Blog) error {
 	return nil
 }
 
-func (br *BlogRepository) delete(ctx context.Context, id string) error {
+func (br *BlogRepository) Delete(ctx context.Context, id string) error {
 	oid, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
