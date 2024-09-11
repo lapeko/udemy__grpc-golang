@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-	pb "github.com/lapeko/udemy__grpc-golang/blog/server/proto"
+	"github.com/lapeko/udemy__grpc-golang/blog/proto"
 	"github.com/lapeko/udemy__grpc-golang/blog/server/storage"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -20,7 +20,7 @@ const (
 type Api struct {
 	db             *mongo.Database
 	BlogRepository *storage.BlogRepository
-	pb.BlogServiceServer
+	proto.BlogServiceServer
 }
 
 func (a *Api) Start() {
@@ -35,7 +35,7 @@ func (a *Api) Start() {
 		reflection.Register(s)
 	}
 
-	pb.RegisterBlogServiceServer(s, a)
+	proto.RegisterBlogServiceServer(s, a)
 
 	log.Println("Server is running on", address)
 	log.Fatalln(s.Serve(lis))
