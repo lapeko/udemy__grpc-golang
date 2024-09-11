@@ -1,9 +1,9 @@
 .PHONY: protoc run-evans server client
 
-protoc:
+proto:
 	protoc -I=proto --go_out=./proto --go-grpc_out=./proto --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative proto/*.proto
 
-run-evans:
+evans:
 	evans --host localhost --port 50051 -r
 
 server:
@@ -11,3 +11,9 @@ server:
 
 client:
 	go run -v .\client
+
+docker:
+	docker-compose up -d
+
+docker-down:
+	docker-compose down

@@ -2,14 +2,28 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"github.com/lapeko/udemy__grpc-golang/blog/proto"
 	"github.com/lapeko/udemy__grpc-golang/blog/server/internal/blog-grpc/models"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (a *Api) GetBlogs(_ *emptypb.Empty, in grpc.ServerStreamingServer[proto.Blog]) error {
+func (a *Api) GetBlogs(_ *emptypb.Empty, stream grpc.ServerStreamingServer[proto.Blog]) error {
+	blogs, err := a.BlogRepository.GetAll()
+
+	if err != nil {
+		return err
+	}
+
+	for _, blog := range blogs {
+		if err := stream.Send(blog.ToProto()); err != nil {
+			return status.Error(codes.Internal, fmt.Sprintf("Stream send error. Error: %v\n", err))
+		}
+	}
+
 	return nil
 }
 

@@ -48,5 +48,6 @@ func (a *Api) InitStorage() {
 		log.Fatalln(err)
 	}
 	a.db = client.Database("blog-grpc")
+	log.Println("mongodb successfully connected")
 	a.BlogRepository = storage.NewBlogRepository(a.db)
 }
