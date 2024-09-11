@@ -12,7 +12,7 @@ import (
 )
 
 func (a *Api) GetBlogs(_ *emptypb.Empty, stream grpc.ServerStreamingServer[proto.Blog]) error {
-	blogs, err := a.BlogRepository.GetAll()
+	blogs, err := a.BlogRepository.GetAll(context.Background())
 
 	if err != nil {
 		return err
@@ -31,7 +31,7 @@ func (a *Api) CreateBlog(c context.Context, p *proto.Blog) (*proto.BlogId, error
 	blog := models.Blog{}
 	blog.FillFromProto(p)
 
-	oid, err := a.BlogRepository.CreateOne(blog)
+	oid, err := a.BlogRepository.CreateOne(context.Background(), blog)
 
 	if err != nil {
 		return nil, status.Error(500, "Creation failure")
