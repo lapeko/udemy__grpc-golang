@@ -121,7 +121,11 @@ func (br *BlogRepository) Delete(ctx context.Context, id string) error {
 		return status.Error(codes.InvalidArgument, "Provided ObjectId hex is incorrect")
 	}
 
-	res, err := br.collection.DeleteOne(ctx, oid)
+	filter := bson.M{
+		"_id": oid,
+	}
+
+	res, err := br.collection.DeleteOne(ctx, filter)
 
 	if err != nil {
 		return status.Error(codes.Internal, fmt.Sprintf("Delete Blog DB error occurred. Error: %v", err))
@@ -130,6 +134,6 @@ func (br *BlogRepository) Delete(ctx context.Context, id string) error {
 	if res.DeletedCount == 0 {
 		return status.Error(codes.NotFound, "Blog not found")
 	}
-
+	
 	return nil
 }

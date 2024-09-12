@@ -61,7 +61,7 @@ func (a *Api) UpdateBlog(c context.Context, in *pb.Blog) (*emptypb.Empty, error)
 	return &emptypb.Empty{}, nil
 }
 
-func (a *Api) DeleteBlog(c context.Context, in *pb.BlogId) (*pb.BlogId, error) {
+func (a *Api) DeleteBlogById(c context.Context, in *pb.BlogId) (*pb.BlogId, error) {
 	if err := a.BlogRepository.Delete(c, in.Id); err != nil {
 		return nil, err
 	}
