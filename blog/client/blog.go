@@ -8,11 +8,11 @@ import (
 	"log"
 )
 
-func doGetAll(c pb.BlogServiceClient) ([]*pb.Blog, error) {
-	stream, err := c.GetBlogs(context.Background(), &emptypb.Empty{})
+func doGetBlogs(ctx context.Context, c pb.BlogServiceClient) []*pb.Blog {
+	stream, err := c.GetBlogs(ctx, &emptypb.Empty{})
 
 	if err != nil {
-		return nil, err
+		log.Fatalf("%v", err)
 	}
 
 	blogs := make([]*pb.Blog, 0)
@@ -21,7 +21,7 @@ func doGetAll(c pb.BlogServiceClient) ([]*pb.Blog, error) {
 		blog, err := stream.Recv()
 
 		if err == io.EOF {
-			return blogs, nil
+			return blogs
 		}
 
 		if err != nil {
@@ -31,4 +31,44 @@ func doGetAll(c pb.BlogServiceClient) ([]*pb.Blog, error) {
 
 		blogs = append(blogs, blog)
 	}
+}
+
+func doCreateBlog(ctx context.Context, c pb.BlogServiceClient, blog *pb.Blog) *pb.BlogId {
+	newBlog, err := c.CreateBlog(ctx, blog)
+
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	return newBlog
+}
+
+func doGetBlogById(ctx context.Context, c pb.BlogServiceClient, blogId *pb.BlogId) *pb.Blog {
+	blog, err := c.GetBlogById(ctx, blogId)
+
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	return blog
+}
+
+func doUpdateBlog(ctx context.Context, c pb.BlogServiceClient, blog *pb.Blog) *pb.Blog {
+	_, err := c.UpdateBlog(ctx, blog)
+
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	return blog
+}
+
+func doDeleteBlogById(ctx context.Context, c pb.BlogServiceClient, blogId *pb.BlogId) *pb.BlogId {
+	_, err := c.DeleteBlogById(ctx, blogId)
+
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	return blogId
 }

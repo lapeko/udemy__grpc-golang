@@ -134,6 +134,6 @@ func (br *BlogRepository) Delete(ctx context.Context, id string) error {
 	if res.DeletedCount == 0 {
 		return status.Error(codes.NotFound, "Blog not found")
 	}
-	
+
 	return nil
 }
