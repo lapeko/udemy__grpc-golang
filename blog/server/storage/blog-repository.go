@@ -91,10 +91,20 @@ func (br *BlogRepository) GetById(ctx context.Context, id string) (*models.Blog,
 }
 
 func (br *BlogRepository) Update(ctx context.Context, blog *models.Blog) error {
-	res, err := br.collection.UpdateByID(ctx, blog.Id, blog)
+	oid, err := primitive.ObjectIDFromHex(blog.Id.Hex())
 
 	if err != nil {
-		return status.Error(codes.Internal, fmt.Sprintf("Update Blog DB error occurred. Error: %v"))
+		return status.Error(codes.InvalidArgument, "Provided ObjectId hex is incorrect")
+	}
+
+	update := bson.M{
+		"$set": blog,
+	}
+
+	res, err := br.collection.UpdateByID(ctx, oid, update)
+
+	if err != nil {
+		return status.Error(codes.Internal, fmt.Sprintf("Update Blog DB error occurred. Error: %v", err))
 	}
 
 	if res.MatchedCount == 0 {
@@ -114,7 +124,7 @@ func (br *BlogRepository) Delete(ctx context.Context, id string) error {
 	res, err := br.collection.DeleteOne(ctx, oid)
 
 	if err != nil {
-		return status.Error(codes.Internal, fmt.Sprintf("Delete Blog DB error occurred. Error: %v"))
+		return status.Error(codes.Internal, fmt.Sprintf("Delete Blog DB error occurred. Error: %v", err))
 	}
 
 	if res.DeletedCount == 0 {

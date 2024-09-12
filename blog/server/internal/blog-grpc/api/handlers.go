@@ -21,7 +21,7 @@ func (a *Api) CreateBlog(c context.Context, p *pb.Blog) (*pb.BlogId, error) {
 		return nil, status.Error(codes.Internal, "Creation failure")
 	}
 
-	return &proto.BlogId{Id: oid.Hex()}, nil
+	return &pb.BlogId{Id: oid.Hex()}, nil
 }
 
 func (a *Api) GetBlogs(_ *emptypb.Empty, stream grpc.ServerStreamingServer[pb.Blog]) error {
